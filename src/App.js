@@ -1,25 +1,46 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { Component} from "react";
+import Todo from './Todo';
+import AddForm from './AddForm';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+export default class App extends Component{
+  constructor(props){
+    super(props);
+    //State that holds temporarily data
+    this.state = {
+      todos : [
+        {id: 1, content: 'buy some milk'},
+        {id: 2, content: 'react js test'},
+      ],
+    }
+  }
+
+  //Callback functions
+
+  deleteTodoCallback = (id) => {
+    let nextTodos = this.state.todos.filter(todo =>{
+      return todo.id !== id;
+    });
+    this.setState({
+      todos: nextTodos,
+    })
+  }
+
+  addTodoCallback = (item) => {
+    item.id = Math.random();
+    let nextTodo = [...this.state.todos, item];
+    this.setState({
+      todos: nextTodo,
+    })
+  }
+
+  render(){
+    return (
+      <div className="todo-app container">
+        <h1 className="center bue-text">Todo's</h1>
+        <Todo todos={this.state.todos} onDelete={this.deleteTodoCallback}/>
+        <AddForm onAdd={this.addTodoCallback}/>
+      </div>
+    );
+  }
 }
 
-export default App;
